@@ -600,10 +600,19 @@ https://pgadmin4-njepcfc3la-nw.a.run.app/login?next=%2F
 
 #### LOGIN CREDENTIALS (See contents of Dockerfile)
 
-
+## access locally
+http://127.0.0.1/pgadmin4
 
 # phpMyAdmin
 https://cloud.google.com/sql/docs/mysql/phpmyadmin-on-app-engine
 
 
 
+dropdb --if-exists --username postgres hpfolio
+
+psql -U postgres postgres
+CREATE DATABASE pfolio_db_local;
+CREATE USER arjuna11 WITH SUPERUSER PASSWORD 'havana11';
+\l
+\du
+\q
