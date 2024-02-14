@@ -101,6 +101,7 @@ INSTALLED_APPS = [
     'about',
     'projects',
     'technologies',
+    'qualifications',
     'contact',
     'upload',
 ]
