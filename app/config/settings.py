@@ -1,6 +1,7 @@
 # REFACTOR: use env() and 'harden'
 import environ
 import os
+from os.path import join, dirname
 import io
 from google.cloud import secretmanager
 from pathlib import Path
@@ -12,13 +13,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
 env = environ.Env(DEBUG=(bool, False))
-env_file = os.path.join(BASE_DIR, 'config/.env')
+# env_file = os.path.join(BASE_DIR, 'config/.env')
 
-print("checking ENV:" + env_file)
+# print("checking ENV:" + env_file)
 
-if os.path.isfile(env_file):
-    # read a local .env file
-    env.read_env(env_file)
+# if os.path.isfile(env_file):
+#     # read a local .env file
+#     env.read_env(env_file)
     
 # elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
 #     # pull .env file from Secret Manager
@@ -33,33 +34,27 @@ if os.path.isfile(env_file):
 # else:
 #     raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
 
-# #load_dotenv()  # take environment variables from .env.
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
+DEBUG = os.environ.get("DEBUG")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
+POSTGRES_DB = os.environ.get("POSTGRES_DB")
+POSTGRES_USER = os.environ.get("POSTGRES_USER")
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
 
-FRONTEND_URL=os.getenv('FRONTEND_URL')
-print("FRONTEND_URL::", FRONTEND_URL)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+FRONTEND_URL = os.environ.get("FRONTEND_URL")
+
+print(f'SECRET_KEY:{SECRET_KEY}')
+print(f'POSTGRES_PASSWORD:{POSTGRES_PASSWORD}')
+print(f'FRONTEND_URL:{FRONTEND_URL}')
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL
 ]
- 
-SECRET_KEY = os.getenv('SECRET_KEY')
-print("SECRET_KEY", SECRET_KEY)
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = bool(int(os.environ.get('DEBUG',0)))
-#print("DEBUG::", env('DEBUG'))
-
-# when DEBUG = False : Not Found The requested resource was not found on this server.
-# research cause of this
-# test running as production in local env
-#
-# https://stackoverflow.com/questions/1626326/how-to-manage-local-vs-production-settings-in-django
-# restructure to specific production & local settings
-#
-DEBUG=os.getenv('DEBUG')
-print("DEBUG::", DEBUG)
 
 APPENGINE_URL = env('APPENGINE_URL', default=None)
 if APPENGINE_URL:
