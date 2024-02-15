@@ -36,8 +36,8 @@ if os.path.isfile(env_file):
 # #load_dotenv()  # take environment variables from .env.
 
 
-FRONTEND_URL=os.getenv('FRONTEND_URL')
-print("FRONTEND_URL::", FRONTEND_URL)
+FRONTEND_URL=os.getenv('FRONTEND_URL').rstrip("/")
+print(f"\nFRONTEND_URL::{FRONTEND_URL}")
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL
@@ -75,6 +75,11 @@ else:
 
 DATABASES = {'default': env.db()}
 
+# If the flag as been set, configure to use proxy
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["PORT"] = 1234
+    
 #ALLOWED_HOSTS = [
 #    '0.0.0.0',
 #    'backend',
