@@ -1,0 +1,1564 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.12
+-- Dumped by pg_dump version 13.13
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: about_about; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.about_about (
+    id bigint NOT NULL,
+    title character varying(50) NOT NULL,
+    description character varying(250) NOT NULL,
+    icon character varying(30) NOT NULL
+);
+
+
+--
+-- Name: about_about_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.about_about_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: about_about_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.about_about_id_seq OWNED BY public.about_about.id;
+
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id bigint NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(150) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user_groups (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: contact_contact; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.contact_contact (
+    id bigint NOT NULL,
+    address character varying(250) NOT NULL,
+    email character varying(150) NOT NULL,
+    latitude numeric(9,6) NOT NULL,
+    longitude numeric(9,6) NOT NULL
+);
+
+
+--
+-- Name: contact_contact_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.contact_contact_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: contact_contact_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.contact_contact_id_seq OWNED BY public.contact_contact.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_migrations (
+    id bigint NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: projects_project; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.projects_project (
+    id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    description character varying(200) NOT NULL,
+    link character varying(250) NOT NULL,
+    image character varying(100) NOT NULL,
+    link_blog character varying(250) NOT NULL,
+    blog character varying(250) NOT NULL
+);
+
+
+--
+-- Name: projects_project_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.projects_project_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: projects_project_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.projects_project_id_seq OWNED BY public.projects_project.id;
+
+
+--
+-- Name: projects_project_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.projects_project_tags (
+    id bigint NOT NULL,
+    project_id bigint NOT NULL,
+    tag_id bigint NOT NULL
+);
+
+
+--
+-- Name: projects_project_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.projects_project_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: projects_project_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.projects_project_tags_id_seq OWNED BY public.projects_project_tags.id;
+
+
+--
+-- Name: projects_tag; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.projects_tag (
+    id bigint NOT NULL,
+    name character varying(30) NOT NULL
+);
+
+
+--
+-- Name: projects_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.projects_tag_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: projects_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.projects_tag_id_seq OWNED BY public.projects_tag.id;
+
+
+--
+-- Name: research_research; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.research_research (
+    id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    description character varying(200) NOT NULL,
+    link character varying(250) NOT NULL,
+    link_blog character varying(250) NOT NULL,
+    image character varying(100) NOT NULL
+);
+
+
+--
+-- Name: research_research_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.research_research_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: research_research_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.research_research_id_seq OWNED BY public.research_research.id;
+
+
+--
+-- Name: research_research_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.research_research_tags (
+    id bigint NOT NULL,
+    research_id bigint NOT NULL,
+    tag_id bigint NOT NULL
+);
+
+
+--
+-- Name: research_research_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.research_research_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: research_research_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.research_research_tags_id_seq OWNED BY public.research_research_tags.id;
+
+
+--
+-- Name: research_tag; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.research_tag (
+    id bigint NOT NULL,
+    name character varying(30) NOT NULL
+);
+
+
+--
+-- Name: research_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.research_tag_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: research_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.research_tag_id_seq OWNED BY public.research_tag.id;
+
+
+--
+-- Name: technologies_technology; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.technologies_technology (
+    id bigint NOT NULL,
+    name character varying(100) NOT NULL,
+    icon character varying(100) NOT NULL
+);
+
+
+--
+-- Name: technologies_technology_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.technologies_technology_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: technologies_technology_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.technologies_technology_id_seq OWNED BY public.technologies_technology.id;
+
+
+--
+-- Name: about_about id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.about_about ALTER COLUMN id SET DEFAULT nextval('public.about_about_id_seq'::regclass);
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: contact_contact id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contact_contact ALTER COLUMN id SET DEFAULT nextval('public.contact_contact_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: projects_project id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project ALTER COLUMN id SET DEFAULT nextval('public.projects_project_id_seq'::regclass);
+
+
+--
+-- Name: projects_project_tags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project_tags ALTER COLUMN id SET DEFAULT nextval('public.projects_project_tags_id_seq'::regclass);
+
+
+--
+-- Name: projects_tag id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_tag ALTER COLUMN id SET DEFAULT nextval('public.projects_tag_id_seq'::regclass);
+
+
+--
+-- Name: research_research id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research ALTER COLUMN id SET DEFAULT nextval('public.research_research_id_seq'::regclass);
+
+
+--
+-- Name: research_research_tags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research_tags ALTER COLUMN id SET DEFAULT nextval('public.research_research_tags_id_seq'::regclass);
+
+
+--
+-- Name: research_tag id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_tag ALTER COLUMN id SET DEFAULT nextval('public.research_tag_id_seq'::regclass);
+
+
+--
+-- Name: technologies_technology id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.technologies_technology ALTER COLUMN id SET DEFAULT nextval('public.technologies_technology_id_seq'::regclass);
+
+
+--
+-- Data for Name: about_about; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.about_about (id, title, description, icon) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add user	4	add_user
+14	Can change user	4	change_user
+15	Can delete user	4	delete_user
+16	Can view user	4	view_user
+17	Can add content type	5	add_contenttype
+18	Can change content type	5	change_contenttype
+19	Can delete content type	5	delete_contenttype
+20	Can view content type	5	view_contenttype
+21	Can add session	6	add_session
+22	Can change session	6	change_session
+23	Can delete session	6	delete_session
+24	Can view session	6	view_session
+25	Can add About	7	add_about
+26	Can change About	7	change_about
+27	Can delete About	7	delete_about
+28	Can view About	7	view_about
+29	Can add tag	8	add_tag
+30	Can change tag	8	change_tag
+31	Can delete tag	8	delete_tag
+32	Can view tag	8	view_tag
+33	Can add project	9	add_project
+34	Can change project	9	change_project
+35	Can delete project	9	delete_project
+36	Can view project	9	view_project
+37	Can add tag	10	add_tag
+38	Can change tag	10	change_tag
+39	Can delete tag	10	delete_tag
+40	Can view tag	10	view_tag
+41	Can add research	11	add_research
+42	Can change research	11	change_research
+43	Can delete research	11	delete_research
+44	Can view research	11	view_research
+45	Can add Technology	12	add_technology
+46	Can change Technology	12	change_technology
+47	Can delete Technology	12	delete_technology
+48	Can view Technology	12	view_technology
+49	Can add Contact	13	add_contact
+50	Can change Contact	13	change_contact
+51	Can delete Contact	13	delete_contact
+52	Can view Contact	13	view_contact
+\.
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$260000$7KYQhjYxEdDNtlv3hKyKRV$naz+Y9o3zuYuUo+vVQuSG4Kaaw/X4asGI333x8gdfrg=	2024-02-14 10:10:35.957042+00	t	heidless			rob.lockhart@yahoo.co.uk	t	t	2024-02-13 10:49:36.809981+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: contact_contact; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.contact_contact (id, address, email, latitude, longitude) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2024-02-14 10:37:10.628828+00	1	test project tag	1	[{"added": {}}]	8	1
+2	2024-02-14 10:37:15.437154+00	1	test project	1	[{"added": {}}]	9	1
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	about	about
+8	projects	tag
+9	projects	project
+10	research	tag
+11	research	research
+12	technologies	technology
+13	contact	contact
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	about	0001_initial	2024-02-13 10:48:54.656016+00
+2	contenttypes	0001_initial	2024-02-13 10:48:54.769084+00
+3	auth	0001_initial	2024-02-13 10:48:55.289962+00
+4	admin	0001_initial	2024-02-13 10:48:55.432267+00
+5	admin	0002_logentry_remove_auto_add	2024-02-13 10:48:55.521129+00
+6	admin	0003_logentry_add_action_flag_choices	2024-02-13 10:48:55.591183+00
+7	contenttypes	0002_remove_content_type_name	2024-02-13 10:48:55.692852+00
+8	auth	0002_alter_permission_name_max_length	2024-02-13 10:48:55.761781+00
+9	auth	0003_alter_user_email_max_length	2024-02-13 10:48:55.829588+00
+10	auth	0004_alter_user_username_opts	2024-02-13 10:48:55.886176+00
+11	auth	0005_alter_user_last_login_null	2024-02-13 10:48:55.958712+00
+12	auth	0006_require_contenttypes_0002	2024-02-13 10:48:56.010967+00
+13	auth	0007_alter_validators_add_error_messages	2024-02-13 10:48:56.066461+00
+14	auth	0008_alter_user_username_max_length	2024-02-13 10:48:56.179995+00
+15	auth	0009_alter_user_last_name_max_length	2024-02-13 10:48:56.249068+00
+16	auth	0010_alter_group_name_max_length	2024-02-13 10:48:56.318167+00
+17	auth	0011_update_proxy_permissions	2024-02-13 10:48:56.378836+00
+18	auth	0012_alter_user_first_name_max_length	2024-02-13 10:48:56.446419+00
+19	contact	0001_initial	2024-02-13 10:48:56.516476+00
+20	projects	0001_initial	2024-02-13 10:48:56.72814+00
+21	projects	0002_project_link_blog	2024-02-13 10:48:56.795939+00
+22	projects	0003_project_blog_alter_project_link_blog	2024-02-13 10:48:56.885317+00
+23	research	0001_initial	2024-02-13 10:48:57.104379+00
+24	sessions	0001_initial	2024-02-13 10:48:57.226518+00
+25	technologies	0001_initial	2024-02-13 10:48:57.33952+00
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+83twfv3u1uesk173rfm8346oxtpzy313	.eJxVjDsOwyAQRO9CHSH8YyFlep_BWnaX4CQCydhVlLvHllwk3Wjem3mrCbc1TVuVZZpZXVWjLr9dQHpKPgA_MN-LppLXZQ76UPRJqx4Ly-t2un8HCWva1yBd6wg9WugHMrFr7BCkI6BWDJB3xnqIfQRpmATjHnofGR27YAwE9fkC7N04qg:1rZr7t:yGvPkGZXUVY9dLbkOh1E83hmjVQ0b2jIqoeS7zvr7-o	2024-02-27 11:39:01.754747+00
+w5pdk1i2s1imcooqskt4vc1hnq71jfqe	.eJxVjDsOwyAQRO9CHSH8YyFlep_BWnaX4CQCydhVlLvHllwk3Wjem3mrCbc1TVuVZZpZXVWjLr9dQHpKPgA_MN-LppLXZQ76UPRJqx4Ly-t2un8HCWva1yBd6wg9WugHMrFr7BCkI6BWDJB3xnqIfQRpmATjHnofGR27YAwE9fkC7N04qg:1raCDr:IhITzS-F0oSfu2yK7d-nl5d95IYHrBIsb2nEsw6p8v8	2024-02-28 10:10:35.965856+00
+\.
+
+
+--
+-- Data for Name: projects_project; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.projects_project (id, name, description, link, image, link_blog, blog) FROM stdin;
+1	test project	test desc	#	images/v-img.jpg	#	#
+\.
+
+
+--
+-- Data for Name: projects_project_tags; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.projects_project_tags (id, project_id, tag_id) FROM stdin;
+1	1	1
+\.
+
+
+--
+-- Data for Name: projects_tag; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.projects_tag (id, name) FROM stdin;
+1	test project tag
+\.
+
+
+--
+-- Data for Name: research_research; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.research_research (id, name, description, link, link_blog, image) FROM stdin;
+\.
+
+
+--
+-- Data for Name: research_research_tags; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.research_research_tags (id, research_id, tag_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: research_tag; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.research_tag (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: technologies_technology; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.technologies_technology (id, name, icon) FROM stdin;
+\.
+
+
+--
+-- Name: about_about_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.about_about_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 52, true);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 1, true);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: contact_contact_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.contact_contact_id_seq', 1, false);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 2, true);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 13, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 25, true);
+
+
+--
+-- Name: projects_project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.projects_project_id_seq', 1, true);
+
+
+--
+-- Name: projects_project_tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.projects_project_tags_id_seq', 1, true);
+
+
+--
+-- Name: projects_tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.projects_tag_id_seq', 1, true);
+
+
+--
+-- Name: research_research_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.research_research_id_seq', 1, false);
+
+
+--
+-- Name: research_research_tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.research_research_tags_id_seq', 1, false);
+
+
+--
+-- Name: research_tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.research_tag_id_seq', 1, false);
+
+
+--
+-- Name: technologies_technology_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.technologies_technology_id_seq', 1, false);
+
+
+--
+-- Name: about_about about_about_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.about_about
+    ADD CONSTRAINT about_about_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: contact_contact contact_contact_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contact_contact
+    ADD CONSTRAINT contact_contact_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: projects_project projects_project_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project
+    ADD CONSTRAINT projects_project_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_project_tags projects_project_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project_tags
+    ADD CONSTRAINT projects_project_tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_project_tags projects_project_tags_project_id_tag_id_5891719a_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project_tags
+    ADD CONSTRAINT projects_project_tags_project_id_tag_id_5891719a_uniq UNIQUE (project_id, tag_id);
+
+
+--
+-- Name: projects_tag projects_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_tag
+    ADD CONSTRAINT projects_tag_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: research_research research_research_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research
+    ADD CONSTRAINT research_research_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: research_research_tags research_research_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research_tags
+    ADD CONSTRAINT research_research_tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: research_research_tags research_research_tags_research_id_tag_id_4f9b113f_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research_tags
+    ADD CONSTRAINT research_research_tags_research_id_tag_id_4f9b113f_uniq UNIQUE (research_id, tag_id);
+
+
+--
+-- Name: research_tag research_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_tag
+    ADD CONSTRAINT research_tag_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: technologies_technology technologies_technology_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.technologies_technology
+    ADD CONSTRAINT technologies_technology_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: projects_project_tags_project_id_9bbfa17b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX projects_project_tags_project_id_9bbfa17b ON public.projects_project_tags USING btree (project_id);
+
+
+--
+-- Name: projects_project_tags_tag_id_c949773d; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX projects_project_tags_tag_id_c949773d ON public.projects_project_tags USING btree (tag_id);
+
+
+--
+-- Name: research_research_tags_research_id_207d32ea; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX research_research_tags_research_id_207d32ea ON public.research_research_tags USING btree (research_id);
+
+
+--
+-- Name: research_research_tags_tag_id_211e7878; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX research_research_tags_tag_id_211e7878 ON public.research_research_tags USING btree (tag_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: projects_project_tags projects_project_tag_project_id_9bbfa17b_fk_projects_; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project_tags
+    ADD CONSTRAINT projects_project_tag_project_id_9bbfa17b_fk_projects_ FOREIGN KEY (project_id) REFERENCES public.projects_project(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: projects_project_tags projects_project_tags_tag_id_c949773d_fk_projects_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_project_tags
+    ADD CONSTRAINT projects_project_tags_tag_id_c949773d_fk_projects_tag_id FOREIGN KEY (tag_id) REFERENCES public.projects_tag(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: research_research_tags research_research_ta_research_id_207d32ea_fk_research_; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research_tags
+    ADD CONSTRAINT research_research_ta_research_id_207d32ea_fk_research_ FOREIGN KEY (research_id) REFERENCES public.research_research(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: research_research_tags research_research_tags_tag_id_211e7878_fk_research_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.research_research_tags
+    ADD CONSTRAINT research_research_tags_tag_id_211e7878_fk_research_tag_id FOREIGN KEY (tag_id) REFERENCES public.research_tag(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
+--
+
+REVOKE ALL ON SCHEMA public FROM cloudsqladmin;
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO cloudsqlsuperuser;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
