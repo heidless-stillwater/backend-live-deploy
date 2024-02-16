@@ -161,7 +161,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-#DATABASES = {
+
+# LOCAL_DB=env('POSTGRES_DB')
+# print(f'LOCAL DB:{LOCAL_DB}')
+ 
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql',
 #        'NAME': env('POSTGRES_DB'),
@@ -171,7 +175,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #        'PORT': '', # leave blank so the default port is selected
 #        'PORT': '', # leave blank so the default port is selected
 #    }
-#}
+# }
 
 
 # Password validation

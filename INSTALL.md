@@ -579,7 +579,7 @@ FROM dpage/pgadmin4
 
 ENV PGADMIN_DEFAULT_EMAIL=rob.lockhart@yahoo.co.uk
 
-ENV PGADMIN_DEFAULT_PASSWORD=havana11
+ENV PGADMIN_DEFAULT_PASSWORD=havana111965
 
 ENV PGADMIN_LISTEN_PORT=8080
 ```
@@ -587,16 +587,24 @@ ENV PGADMIN_LISTEN_PORT=8080
 
 Builld
 ```
-gcloud builds submit --tag=gcr.io/cloud-run-install/pgadmin4
+gcloud builds submit --tag=gcr.io/heidless-pfolio-deploy-4/pgadmin4
 ```
 
 Deploy
 ```
-gcloud run deploy --image=gcr.io/cloud-run-install/pgadmin4 --platform=managed
+gcloud run deploy --image=gcr.io/heidless-pfolio-deploy-4/pgadmin4 --platform=managed
 ```
 
 ## Access
-https://pgadmin4-njepcfc3la-nw.a.run.app/login?next=%2F
+https://pgadmin4-um4b6gn3cq-nw.a.run.app
+
+## [Connecting to GCP’s Cloud SQL (PostgresSQL) from PgAdmin — 3 simple steps](https://cshiva.medium.com/connecting-to-gcps-cloud-sql-postgressql-from-pgadmin-3-simple-steps-2f4530488a4c)
+
+## [pgAdmin Backup Database in PostgreSQL Simplified 101](https://hevodata.com/learn/pgadmin-backup-database/#11)
+
+## [Backup Dialog](https://www.pgadmin.org/docs/pgadmin4/development/backup_dialog.html)
+
+## [Why pgAdmin 4 is so slow](https://stackoverflow.com/questions/62186945/why-pgadmin-4-is-so-slow)
 
 #### LOGIN CREDENTIALS (See contents of Dockerfile)
 
