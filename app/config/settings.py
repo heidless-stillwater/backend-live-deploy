@@ -220,21 +220,23 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static')
 ]
 
-# from google.oauth2 import service_account
-# # storage
-# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-#     os.path.join(BASE_DIR, 'pure-vehicle-376415-57176dd7c4dd.json')
-# )
-# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-# GS_BUCKET_NAME = 'django-upload-bucket-heidless'
+from google.oauth2 import service_account
+# storage
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-5-f8aa82b60822.json')
+)
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'pfolio-backend-bucket-5'
 
-# STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
 
 #STATIC_URL = '/static/'
-STATIC_URL = 'https://storage.cloud.google.com/pfolio-backend-bucket-4/'
+STATIC_URL = 'https://storage.cloud.google.com/pfolio-backend-bucket-5/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
+# MEDIA_URL = 'https://storage.cloud.google.com/pfolio-backend-bucket-4/media'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
