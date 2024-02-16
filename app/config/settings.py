@@ -14,37 +14,37 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, False))
 env_file = os.path.join(BASE_DIR, 'config/.env')
 
-print("checking ENV:" + env_file)
+print("checking for local ENV: " + env_file)
 
 if os.path.isfile(env_file):
     # read a local .env file
     env.read_env(env_file)
+
+elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
+    # pull .env definitions from Secret Manager
+    project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
+    print(f'Using Google SECRETS:{project_id}')
     
-# elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
-#     # pull .env file from Secret Manager
-#     project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get('SETTINGS_NAME', 'pfolio_secrets')
+    name = f'projects/{project_id}/secrets/{settings_name}/versions/latest'
+    payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
 
-#     client = secretmanager.SecretManagerServiceClient()
-#     settings_name = os.environ.get('SETTINGS_NAME', 'pfolio_settings')
-#     name = f'projects/{project_id}/secrets/{settings_name}/versions/latest'
-#     payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
-
-#     env.read_env(io.StringIO(payload))
-# else:
-#     raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
 
 # #load_dotenv()  # take environment variables from .env.
 
-
 FRONTEND_URL=os.getenv('FRONTEND_URL').rstrip("/")
-print(f"\nFRONTEND_URL::{FRONTEND_URL}")
+# print(f"\nFRONTEND_URL::{FRONTEND_URL}")
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL
 ]
  
 SECRET_KEY = os.getenv('SECRET_KEY')
-print("SECRET_KEY", SECRET_KEY)
+# print("SECRET_KEY", SECRET_KEY)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
