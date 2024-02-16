@@ -230,8 +230,8 @@ STATICFILES_DIRS = [
 
 # STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-STATIC_URL = '/static/'
-# STATIC_URL = 'https://storage.cloud.google.com/django-upload-bucket-heidless/'
+#STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.cloud.google.com/pfolio-backend-bucket-4/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
