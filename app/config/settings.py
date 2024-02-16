@@ -230,7 +230,6 @@ GS_BUCKET_NAME = 'pfolio-backend-bucket-5'
 
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-
 #STATIC_URL = '/static/'
 STATIC_URL = 'https://storage.cloud.google.com/pfolio-backend-bucket-5/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
