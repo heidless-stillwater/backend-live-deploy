@@ -171,14 +171,30 @@ cd /home/heidless/LIVE/pfolio/
 # initialize to ensure working with correct project & ID
 gcloud init
 'Create a new configuration'
-pfolio-backend-2
+pfolio-backend-0
 dreamseedambience...
-pfolio-backend-2
+pfolio-backend-0
 
 # initialise App Engine
 gcloud app create
 REGION: europe-west2
 ```
+
+## install/init python & venv
+
+- ### [Managing Python](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-python.html)
+    - ### Use
+
+---
+
+- ### Python Installation
+
+- ### [Pipenv: Python Dev Workflow for Humans¶](https://pipenv.pypa.io/en/latest/)
+    - ### [pipenv installation](https://pipenv.pypa.io/en/latest/installation.html)
+```
+
+```
+
 
 ## prep environment
 ```
