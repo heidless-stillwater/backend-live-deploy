@@ -217,8 +217,8 @@ pip install -r requirements.txt
 ```
 # Authenticate and acquire credentials for the API:
 gcloud auth application-default login
--
-ambientuplift@gmail.com
+
+heidlessemail04@gmail.com
 -
 
 # enable Google Auth Library
@@ -244,12 +244,14 @@ ps aux | grep '[b]in/postgres
 ##################################################
 # if on GAE
 
+gcloud init
+
 # ensure correct project
-gcloud config set project heidless-pfolio-deploy
+gcloud config set project heidless-pfolio-deploy-7
 
 # initialise DB Instance (takes some time  - take a break and let it process)
 gcloud sql instances create pfolio-instance-0 \
-    --project heidless-pfolio-deploy-0 \
+    --project heidless-pfolio-deploy-7 \
     --database-version POSTGRES_13 \
     --tier db-f1-micro \
     --region europe-west2
@@ -269,7 +271,7 @@ gcloud sql users create pfolio-user-0 \
     --password Havana111965
 
 # check status of instance
-gcloud sql instances describe --project heidless-pfolio-deploy pfolio-instance-0
+gcloud sql instances describe --project heidless-pfolio-deploy-7 pfolio-instance-0
 -
 -
 
@@ -277,7 +279,8 @@ gcloud sql instances describe --project heidless-pfolio-deploy pfolio-instance-0
 # assemble link from the above info
 postgres://<USER>:<PWD>@//cloudsql/<PROJECT ID>:<REGION>:<INSTANCE>/<DB>
 --
-postgres://pfolio-user-0:Havana111965//cloudsql/heidless-pfolio-deploy:europe-west2:pfolio-instance-0/pfolio-db-0
+postgres://pfolio-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0/pfolio-db-0
+
 --
 
 ##################### TIPS/TRICKS ############################
@@ -296,11 +299,12 @@ gcloud sql instances delete pfolio-instance-2
 
 ## storage bucket
 ```
-# PROJECT: pfolio-
-gcloud config set project heidless-pfolio-deploy
+# PROJECT: heidless-pfolio-deploy-7
+gcloud config set project heidless-pfolio-deploy-7
 
 # initialise BUCKET
-gsutil mb -l europe-west2 gs://h_pfolio_deploy_0
+gsutil mb -l europe-west2 gs://pfolio-deploy-bucket-0
+
 ```
 
 ### service account(s)
@@ -311,7 +315,8 @@ ID: heidless-pfolio-deploy
 'IAM & ADMIN'->Service Accounts
 
 ```
-api-svc@cloud-run-install.iam.gserviceaccount.com
+h-backend-svc-0@heidless-pfolio-deploy-7.iam.gserviceaccount.com
+
 ```
 -
 edit principal
@@ -345,8 +350,9 @@ echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | h
 
 
 cd config
-echo DATABASE_URL=postgres://pfolio-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy:europe-west2:pfolio-instance-0/pfolio-db-0 > .env
-echo GS_BUCKET_NAME=h_pfolio_deploy_0 >> .env
+echo DEBUG=True >> .env
+echo DATABASE_URL=postgres://pfolio-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0/pfolio-db-0  >> .env
+echo GS_BUCKET_NAME=pfolio-deploy-bucket-0 >> .env
 echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
 echo FRONTEND_URL=https://pfolio-frontend-v2xr7nz45q-nw.a.run.app/ >> .env
 
@@ -358,10 +364,9 @@ gcloud secrets describe django_settings
 
 # Grant access to the secret to the App Engine standard service account
 gcloud secrets add-iam-policy-binding django_settings \
-    --member 
-    serviceAccount:pfolio-0@heidless-pfolio-deploy.iam.gserviceaccount.com \
+    --member serviceAccount:h-backend-svc-0@heidless-pfolio-deploy-7.iam.gserviceaccount.com \
     --role roles/secretmanager.secretAccessor
-		
+
 # test - retrieve content of 'django_settings'
 gcloud secrets versions access latest --secret django_settings && echo ""
 
@@ -400,8 +405,9 @@ It's likely that you will be refining & modifying the definitions in your SECRET
 - This will involve your REPLACING  you current SECRETS - i.e. django_settings.
 
 ```
+
 # ensure you are in the right PROJECT
-gcloud config set project heidless-pfolio-deploy
+gcloud config set project heidless-pfolio-deploy-7
 
 edit the config/.env file as needed.
 
@@ -413,7 +419,7 @@ gcloud secrets create django_settings --data-file .env
 
 # Grant access to the secret to the App Engine standard service account
 gcloud secrets add-iam-policy-binding django_settings \
-    --member serviceAccount:pfolio-0@heidless-pfolio-deploy.iam.gserviceaccount.com \
+    --member serviceAccount: h-backend-svc-0@heidless-pfolio-deploy-7.iam.gserviceaccount.com \
     --role roles/secretmanager.secretAccessor
 ```
 
@@ -451,15 +457,17 @@ mv config/.env config/.env-gae
 ### on localhost - run in dedicated shell - <span style="color: #ff807f">DELETE!!!</span>
 ```
 # configure access
-https://console.cloud.google.com/sql/instances/pfolio-instance-0/connections/networking?project=heidless-pfolio-deploy
+https://console.cloud.google.com/sql/instances/pfolio-instance-0/connections/networking?project=heidless-pfolio-deploy-7
 
-pfolio-backend-db-instance-0 -> connections -> add network
+pfolio-instance-0 -> Connections -> Networking -> Add a Network
+
+Connections->
 -
 rob-laptop
 78.149.229.160
 -
 # check if can access DB directly
-gcloud sql connect pfolio-instance-0 --database pfolio-db-0 --user=pfolio-user-0 --quiet
+#    gcloud sql connect pfolio-instance-0 --database pfolio-db-0 --user=pfolio-user-0 --quiet
 
 password:
 Havana111965
@@ -477,15 +485,14 @@ Havana111965
 ```
 export GOOGLE_CLOUD_PROJECT=heidless-pfolio-deploy-0
 export USE_CLOUD_SQL_AUTH_PROXY=true
-export CLOUDRUN_SERVICE_URL=https://heidless-pfolio-deploy@appspot.gserviceaccount.com
+export CLOUDRUN_SERVICE_URL=https://heidless-pfolio-deploy-7@appspot.gserviceaccount.com
 
 ```
 
 ### enable cloud proxy
 ```
-./cloud-sql-proxy --credentials-file ./heidless-pfolio-deploy-0-b97b8a94c2ba.json \
---port 1234 heidless-pfolio-deploy-0:europe-west2:pfolio-instance-0
-  
+./cloud-sql-proxy --credentials-file ./heidless-pfolio-deploy-7-03d2bfcaaa5e.json \
+--port 1234 heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0 
 
 <!-- ./cloud-sql-proxy --credentials-file heidless-pfolio-deploy-f5ccc52a65af.json --port 1234 heidless-pfolio-deploy:europe-west2:pfolio-instance-0 -->
 
