@@ -224,7 +224,7 @@ echo DEBUG=True >> .env
 echo DATABASE_URL=$GCP_DB_URL >> .env
 echo GS_BUCKET_NAME=pfolio-deploy-bucket-0 >> .env
 echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
-echo FRONTEND_URL=https://pfolio-frontend-1-bun63gfm5a-nw.a.run.app/ >> .env
+echo FRONTEND_URL=https://pfolio-frontend-2-bun63gfm5a-nw.a.run.app/ >> .env
 
 # store in secret manager
 # enable secretmanager.googleapis.com if asked
