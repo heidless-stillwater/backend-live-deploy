@@ -5,7 +5,6 @@ https://cloud.google.com/build/docs/deploying-builds/deploy-appengine
 
 --- 
 
-
 ### 'local' install
 Firstly, setup using local install.
 
@@ -33,8 +32,8 @@ CREATE USER arjuna11 WITH PASSWORD 'havana11';
 #### new project
 ```
 'New Project'
-Project: cloud-run-install
-ID: cloud-run-install
+Project: heidless-pfolio-deploy-8	
+ID: heidless-pfolio-deploy-8	
 
 ```
 
@@ -43,12 +42,6 @@ ID: cloud-run-install
 # home dir
 cd /home/heidless/LIVE/pfolio/
 
-# initialize to ensure working with correct project & ID
-gcloud init
-
-# initialise App Engine
-gcloud app create
-REGION: europe-west2
 
 ```
 
@@ -108,10 +101,23 @@ ps aux | grep '[b]in/postgres
 ##################################################
 # if on GAE
 
+
+#####################################
+# ENV Settings
+
+GCP_PROJECT=heidless-pfolio-deploy-8
+GCP_REGION=europe-west2
+
+#####################################
+
+# initialize to ensure working with correct project & ID
 gcloud init
 
-# ensure correct project
-gcloud config set project heidless-pfolio-deploy-7
+# initialise App Engine
+gcloud app create
+--
+heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
+--
 
 # initialise DB Instance (takes some time  - take a break and let it process)
 gcloud sql instances create pfolio-instance-0 \
