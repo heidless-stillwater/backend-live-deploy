@@ -37,7 +37,7 @@ else:
 # #load_dotenv()  # take environment variables from .env.
 
 FRONTEND_URL=os.getenv('FRONTEND_URL').rstrip("/")
-# print(f"\nFRONTEND_URL::{FRONTEND_URL}")
+print(f"\nFRONTEND_URL::{FRONTEND_URL}")
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL

@@ -9,9 +9,11 @@ heidless-pfolio-deploy-8
 ```
 https://heidless-pfolio-deploy-8.nw.r.appspot.com
 
+
 ```
 
 # frontend
 ```
+https://pfolio-frontend-1-bun63gfm5a-nw.a.run.app
 
 ```
