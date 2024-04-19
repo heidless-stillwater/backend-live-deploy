@@ -26,7 +26,7 @@ elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
     print(f'Using Google SECRETS:{project_id}')
     
     client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get('SETTINGS_NAME', 'django_settings')
+    settings_name = os.environ.get('SETTINGS_NAME', 'pfolio-backend-secret')
     name = f'projects/{project_id}/secrets/{settings_name}/versions/latest'
     payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
 
@@ -223,17 +223,18 @@ STATICFILES_DIRS = [
 from google.oauth2 import service_account
 # storage
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-7-496e6c69a236.json')
+    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-8-2caf1618650c.json')
 )
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'pfolio-deploy-bucket-0'
 
+GS_BUCKET_NAME = 'heidless-pfolio-deploy-8-bucket-1'
 
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
 #STATIC_URL = '/static/'
-STATIC_URL = 'https://storage.cloud.google.com/pfolio-deploy-bucket-0/'
+STATIC_URL = 'https://storage.cloud.google.com/pfolio-bucket-0/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'

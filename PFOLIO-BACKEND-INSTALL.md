@@ -107,6 +107,24 @@ ps aux | grep '[b]in/postgres
 
 GCP_PROJECT=heidless-pfolio-deploy-8
 GCP_REGION=europe-west2
+GCP_DB_VERSION=POSTGRES_15
+GCP_INSTANCE=pfolio-backend-instance-1
+GCP_DB_NAME=pfolio-backend-db-1
+GCP_DB_USER=pfolio-backend-user-1
+GCP_DB_URL=postgres://pfolio-backend-user-1:Havana111965@//cloudsql/heidless-pfolio-deploy-8:europe-west2:pfolio-backend-instance-1/pfolio-backend-db-1
+GCP_USER_PWD=Havana111965
+GCP_BUCKET=$GCP_PROJECT-bucket-1
+GCP_SECRET_SETTINGS=pfolio-backend-secret
+GCP_SVC_ACCOUNT=heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
+
+
+# DB URL
+# assemble link from the above info
+postgres://<USER>:<PWD>@//cloudsql/<PROJECT ID>:<REGION>:<INSTANCE>/<DB>
+--
+postgres://pfolio-backend-user-1:Havana111965@//cloudsql/heidless-pfolio-deploy-8:europe-west2:pfolio-backend-instance-1/pfolio-backend-db-1
+
+--
 
 #####################################
 
@@ -120,33 +138,23 @@ heidless-pfolio-deploy-8@appspot.gserviceaccount.com
 --
 
 # initialise DB Instance (takes some time  - take a break and let it process)
-gcloud sql instances create pfolio-instance-0 \
-    --project heidless-pfolio-deploy-7 \
-    --database-version POSTGRES_13 \
+gcloud sql instances create $GCP_INSTANCE \
+    --project $GCP_PROJECT \
+    --database-version $GCP_DB_VERSION \
     --tier db-f1-micro \
-    --region europe-west2
-	
-# if asked - enable API [sqladmin.googleapis.com]
-	
-gcloud sql databases create pfolio-db-0 \
-    --instance pfolio-instance-0
-	
-gcloud sql users create pfolio-user-0 \
-    --instance pfolio-instance-0 \
-    --password Havana111965
+    --region $GCP_REGION
+
+gcloud sql databases create $GCP_DB_NAME \
+    --instance $GCP_INSTANCE
+
+gcloud sql users create $GCP_DB_USER \
+    --instance $GCP_INSTANCE \
+    --password $GCP_USER_PWD
 
 # check status of instance
-gcloud sql instances describe --project heidless-pfolio-deploy-7 pfolio-instance-0
+gcloud sql instances describe --project $GCP_PROJECT $GCP_INSTANCE
 --
 state: RUNNABLE
---
-
-# DB URL
-# assemble link from the above info
-postgres://<USER>:<PWD>@//cloudsql/<PROJECT ID>:<REGION>:<INSTANCE>/<DB>
---
-postgres://pfolio-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0/pfolio-db-0
-
 --
 
 ##################### TIPS/TRICKS ############################
@@ -166,23 +174,17 @@ gcloud sql instances delete pfolio-instance-0
 
 ## storage bucket
 ```
-# PROJECT: heidless-pfolio-deploy-7
-gcloud config set project heidless-pfolio-deploy-7
-
 # initialise BUCKET
-gsutil mb -l europe-west2 gs://pfolio-deploy-bucket-0
+gsutil mb -l europe-west2 gs://$GCP_BUCKET
 
 ```
 
 ### service account(s)
 ```
-PROJECT: heidless-pfolio-deploy
-ID: heidless-pfolio-deploy
-
 'IAM & ADMIN'->Service Accounts
 
 ```
-heidless-pfolio-deploy-7@appspot.gserviceaccount.com
+heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
 
 ```
 -
@@ -205,39 +207,40 @@ generate & install KEY file
 # Download & install json file
 ' copy to local project/app/config directory'
 /home/heidless/projects/backend-live/app/config
+
+---
+export GCP_CREDENTIALS=heidless-pfolio-deploy-8-2caf1618650c.json
+---
+
 ```
 
 ## secrets setup
 ```
-# setup local environment - TEMPORARILY
-# 
-<!-- echo DATABASE_URL=postgres://DATABASE_USERNAME:DATABASE_PASSWORD@//cloudsql/PROJECT_ID:REGION:INSTANCE_NAME/DATABASE_NAME > .env
-echo GS_BUCKET_NAME=PROJECT_ID_MEDIA_BUCKET >> .env
-echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
- -->
+# setup local environment
 
 cd config
+
 echo DEBUG=True >> .env
-echo DATABASE_URL=postgres://pfolio-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0/pfolio-db-0  >> .env
+echo DATABASE_URL=$GCP_DB_URL >> .env
 echo GS_BUCKET_NAME=pfolio-deploy-bucket-0 >> .env
 echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
 echo FRONTEND_URL=https://pfolio-frontend-v2xr7nz45q-nw.a.run.app/ >> .env
 
 # store in secret manager
 # enable secretmanager.googleapis.com if asked
-gcloud secrets delete django_settings
+gcloud secrets delete $GCP_SECRET_SETTINGS
 
-gcloud secrets create django_settings --data-file .env
+gcloud secrets create $GCP_SECRET_SETTINGS --data-file .env
 
-gcloud secrets describe django_settings
+gcloud secrets describe $GCP_SECRET_SETTINGS
 
 # Grant access to the secret to the App Engine standard service account
-gcloud secrets add-iam-policy-binding django_settings \
-    --member serviceAccount:heidless-pfolio-deploy-7@appspot.gserviceaccount.com \
+gcloud secrets add-iam-policy-binding $GCP_SECRET_SETTINGS \
+    --member serviceAccount:$GCP_SVC_ACCOUNT \
     --role roles/secretmanager.secretAccessor
 
-# test - retrieve content of 'django_settings'
-gcloud secrets versions access latest --secret django_settings && echo ""
+# test - retrieve content of '$GCP_SECRET_SETTINGS'
+gcloud secrets versions access latest --secret $GCP_SECRET_SETTINGS && echo ""
 
 ```
 
@@ -247,14 +250,14 @@ gcloud secrets versions access latest --secret django_settings && echo ""
 gcloud config set project heidless-pfolio-deploy-7
 
 ## remove existing SECRET
-gcloud secrets delete django_settings
+gcloud secrets delete $GCP_SECRET_SETTINGS
 
 ## create new SECRET file
-gcloud secrets create django_settings --data-file .env
+gcloud secrets create $GCP_SECRET_SETTINGS --data-file .env
 
 ## Grant access to the secret to the App Engine standard service account
-gcloud secrets add-iam-policy-binding django_settings \
-    --member serviceAccount:heidless-pfolio-deploy-7@appspot.gserviceaccount.com \
+gcloud secrets add-iam-policy-binding $GCP_SECRET_SETTINGS \
+    --member serviceAccount:$GCP_SVC_ACCOUNT \
     --role roles/secretmanager.secretAccessor
 ```
 
@@ -263,12 +266,15 @@ Need to link to the 'key' file you downloaded earlier.
 set GS_CREDENTIALS
 ```
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-7-496e6c69a236.json')
+    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-8-2caf1618650c.json.json')
 )
 
-settings_name = os.environ.get('SETTINGS_NAME', 'django_settings')
+GS_BUCKET_NAME = 'pfolio-bucket-0'
+
+settings_name = os.environ.get('SETTINGS_NAME', '$GCP_SECRET_SETTINGS')
 
 STATIC_URL = 'https://storage.cloud.google.com/pfolio-bucket-0/'
+
 ```
 
 disable local settings to force use of Google Secrets
@@ -289,7 +295,9 @@ rob-laptop
 
 ## check if can access DB directly
 ```
-gcloud sql connect pfolio-instance-0 --database pfolio-db-0 --user=pfolio-user-0 --quiet
+gcloud sql connect pfolio-backend-instance-1 --database $GCP_DB_NAME --user=pfolio-backend-user-1 --quiet
+
+gcloud sql connect $GCP_INSTANCE --database pfolio-backend-db-1 --user=$GCP_DB_USER --quiet
 --
 password:
 Havana111965
@@ -298,16 +306,17 @@ Havana111965
 
 ### ESSENTIAL: set CLOUD vars
 ```
-export GOOGLE_CLOUD_PROJECT=heidless-pfolio-deploy-7
+export GOOGLE_CLOUD_PROJECT=$GCP_PROJECT
 export USE_CLOUD_SQL_AUTH_PROXY=true
-export CLOUDRUN_SERVICE_URL=https://heidless-pfolio-deploy-7@appspot.gserviceaccount.com
+export CLOUDRUN_SERVICE_URL=https://$GCP_SVC_ACCOUNT
 
 ```
 
 ### enable cloud proxy
+
 ```
-./cloud-sql-proxy --credentials-file ./heidless-pfolio-deploy-7-496e6c69a236.json \
---port 1234 heidless-pfolio-deploy-7:europe-west2:pfolio-instance-0 
+./cloud-sql-proxy --credentials-file ./$GCP_CREDENTIALS \
+--port 1234 $GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE
 
 # kill & restart - IF address already in use
 sudo lsof -i -P -n | grep LISTEN
