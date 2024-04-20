@@ -239,6 +239,7 @@ echo GS_BUCKET_NAME=pfolio-deploy-bucket-0 >> .env
 echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
 echo FRONTEND_URL=https://pfolio-frontend-0-ks4eq7xt3a-nw.a.run.app/ >> .env
 
+
 # store in secret manager
 # enable secretmanager.googleapis.com if asked
 gcloud secrets delete $GCP_SECRET_SETTINGS
