@@ -98,43 +98,55 @@ sudo service postgresql restart
 # check process running
 ps aux | grep '[b]in/postgres
 
-##################################################
-# if on GAE
+```
 
-
-#####################################
-# ENV Settings
-
-GCP_PROJECT=heidless-pfolio-deploy-8
+---
+## ENV Settings
+```
+GCP_PROJECT=heidless-pfolio-deploy-9
 GCP_REGION=europe-west2
+
 GCP_DB_VERSION=POSTGRES_15
-GCP_INSTANCE=pfolio-backend-instance-1
-GCP_DB_NAME=pfolio-backend-db-1
-GCP_DB_USER=pfolio-backend-user-1
-GCP_DB_URL=postgres://pfolio-backend-user-1:Havana111965@//cloudsql/heidless-pfolio-deploy-8:europe-west2:pfolio-backend-instance-1/pfolio-backend-db-1
+GCP_INSTANCE=pfolio-backend-instance-0
+GCP_DB_NAME=pfolio-backend-db-0
+GCP_DB_USER=pfolio-backend-user-0
 GCP_USER_PWD=Havana111965
-GCP_BUCKET=$GCP_PROJECT-bucket-1
+GCP_DB_URL=postgres://pfolio-backend-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-9:europe-west2:pfolio-backend-instance-0/pfolio-backend-db-0
+
+GCP_BUCKET=$GCP_PROJECT-bucket
 GCP_SECRET_SETTINGS=pfolio-backend-secret
-GCP_SVC_ACCOUNT=heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
+GCP_SVC_ACCOUNT=heidless-pfolio-deploy-9@appspot.gserviceaccount.com	
+```
+
+# env settings
+```
+source ./config/.env-settings
+
+source .env-settings
+
+```
 
 
-# DB URL
+## DB URL
+```
 # assemble link from the above info
 postgres://<USER>:<PWD>@//cloudsql/<PROJECT ID>:<REGION>:<INSTANCE>/<DB>
 --
-postgres://pfolio-backend-user-1:Havana111965@//cloudsql/heidless-pfolio-deploy-8:europe-west2:pfolio-backend-instance-1/pfolio-backend-db-1
+postgres://pfolio-backend-user-0:Havana111965@//cloudsql/heidless-pfolio-deploy-9:europe-west2:pfolio-backend-instance-0/pfolio-backend-db-0
 
 --
+```
 
 #####################################
 
-# initialize to ensure working with correct project & ID
+```
+## initialize to ensure working with correct project & ID
 gcloud init
 
 # initialise App Engine
 gcloud app create
 --
-heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
+europe-west2
 --
 
 # initialise DB Instance (takes some time  - take a break and let it process)
@@ -156,12 +168,13 @@ gcloud sql instances describe --project $GCP_PROJECT $GCP_INSTANCE
 --
 state: RUNNABLE
 --
+```
 
+```
 ##################### TIPS/TRICKS ############################
 ###
 
 ### If need to REBUILD SQL Instance
-
 # disable deletion protection
 https://console.cloud.google.com/sql/instances/pfolio-instance-0/edit?project=heidless-pfolio-deploy-7&supportedpurview=project
 
@@ -183,11 +196,11 @@ gsutil mb -l europe-west2 gs://$GCP_BUCKET
 ```
 'IAM & ADMIN'->Service Accounts
 
-```
-heidless-pfolio-deploy-8@appspot.gserviceaccount.com	
+--
+heidless-pfolio-deploy-9@appspot.gserviceaccount.com	
 
-```
--
+--
+
 edit principal
 -
 
@@ -199,7 +212,7 @@ Storage Admin
 --
 ```
 
-generate & install KEY file
+### generate & install KEY file
 ```
 'IAM & ADMIN'->Service Accounts->'3 dots'->Manage Keys
 'ADD KEY'->JSON
@@ -209,7 +222,7 @@ generate & install KEY file
 /home/heidless/projects/backend-live/app/config
 
 ---
-export GCP_CREDENTIALS=heidless-pfolio-deploy-8-2caf1618650c.json
+export GCP_CREDENTIALS=heidless-pfolio-deploy-9-5bab8c3949ac.json
 ---
 
 ```
@@ -220,11 +233,11 @@ export GCP_CREDENTIALS=heidless-pfolio-deploy-8-2caf1618650c.json
 
 cd config
 
-echo DEBUG=True >> .env
+echo DEBUG=True > .env
 echo DATABASE_URL=$GCP_DB_URL >> .env
 echo GS_BUCKET_NAME=pfolio-deploy-bucket-0 >> .env
 echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
-echo FRONTEND_URL=https://pfolio-frontend-2-bun63gfm5a-nw.a.run.app/ >> .env
+echo FRONTEND_URL=https://pfolio-frontend-0-ks4eq7xt3a-nw.a.run.app/ >> .env
 
 # store in secret manager
 # enable secretmanager.googleapis.com if asked
@@ -244,7 +257,7 @@ gcloud secrets versions access latest --secret $GCP_SECRET_SETTINGS && echo ""
 
 ```
 
-# SECRET - RESET
+### SECRET - RESET
 ```
 ## ensure you are in the right PROJECT
 gcloud config set project heidless-pfolio-deploy-7
@@ -261,15 +274,15 @@ gcloud secrets add-iam-policy-binding $GCP_SECRET_SETTINGS \
     --role roles/secretmanager.secretAccessor
 ```
 
-### settings.py
+## settings.py
 Need to link to the 'key' file you downloaded earlier.
 set GS_CREDENTIALS
 ```
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-8-2caf1618650c.json.json')
+    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-9-5bab8c3949ac.json')
 )
 
-GS_BUCKET_NAME = 'pfolio-bucket-0'
+GS_BUCKET_NAME = 'heidless-pfolio-deploy-9-bucket'
 
 settings_name = os.environ.get('SETTINGS_NAME', '$GCP_SECRET_SETTINGS')
 
@@ -277,14 +290,15 @@ STATIC_URL = 'https://storage.cloud.google.com/pfolio-bucket-0/'
 
 ```
 
-disable local settings to force use of Google Secrets
+
+### disable local settings to force use of Google Secrets
 ```
 mv config/.env config/.env-gae
 ```
 
 
 ## configure access
-https://console.cloud.google.com/sql/instances/pfolio-instance-0/connections/networking?project=heidless-pfolio-deploy-7
+https://console.cloud.google.com/sql/instances/pfolio-instance-0/connections/networking?project=heidless-pfolio-deploy-9
 ```
 pfolio-instance-0 -> Connections -> Networking -> Add a Network
 --
@@ -293,11 +307,10 @@ rob-laptop
 --
 ```
 
-## check if can access DB directly
+### check if can access DB directly
 ```
-gcloud sql connect pfolio-backend-instance-1 --database $GCP_DB_NAME --user=pfolio-backend-user-1 --quiet
+gcloud sql connect $GCP_INSTANCE --database $GCP_DB_NAME --user=$GCP_DB_USER --quiet
 
-gcloud sql connect $GCP_INSTANCE --database pfolio-backend-db-1 --user=$GCP_DB_USER --quiet
 --
 password:
 Havana111965
@@ -313,8 +326,9 @@ export CLOUDRUN_SERVICE_URL=https://$GCP_SVC_ACCOUNT
 ```
 
 ### enable cloud proxy
-
 ```
+cd config
+
 ./cloud-sql-proxy --credentials-file ./$GCP_CREDENTIALS \
 --port 1234 $GCP_PROJECT:$GCP_REGION:$GCP_INSTANCE
 
@@ -354,6 +368,7 @@ http://localhost:8080/admin
 ```
 # initialze app - creates 'app.yaml'
 vi app/app.yaml
+
 --
 runtime: python39
 env: standard
@@ -374,7 +389,8 @@ gcloud app deploy
 # display APP URL
 gcloud app describe --format "value(defaultHostname)"
 -
-https://heidless-pfolio-deploy.nw.r.appspot.com
+https://heidless-pfolio-deploy-9.nw.r.appspot.com
+
 -
 
 # monitor logs

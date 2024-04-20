@@ -222,18 +222,19 @@ STATICFILES_DIRS = [
 
 from google.oauth2 import service_account
 # storage
+
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-8-2caf1618650c.json')
+    os.path.join(BASE_DIR, 'config/heidless-pfolio-deploy-9-5bab8c3949ac.json')
 )
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-GS_BUCKET_NAME = 'heidless-pfolio-deploy-8-bucket-1'
+GS_BUCKET_NAME = 'heidless-pfolio-deploy-9-bucket'
 
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
 #STATIC_URL = '/static/'
-STATIC_URL = 'https://storage.cloud.google.com/pfolio-bucket-0/'
+STATIC_URL = 'https://storage.cloud.google.com/heidless-pfolio-deploy-9-bucket/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
